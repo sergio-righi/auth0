@@ -112,18 +112,10 @@ export default convict({
         default: ['profile email'],
       },
     },
-    token: {
-      issuer: {
-        doc: 'The issuer for the JWT',
-        default: '',
-      },
-      audience: {
-        doc: 'The audience for the JWT',
-        default: '',
-      },
+    accessToken: {
       expiresIn: {
         doc: 'expressed in seconds or a string describing a time span zeit/ms.',
-        default: '24h',
+        default: '10m',
         env: 'JWT_EXPIRES_IN',
       },
     },

@@ -4,24 +4,20 @@ import { JWTType } from '../interfaces';
 import { crypto, enums, env } from '../utils';
 
 const generateToken = (userId: string, type: enums.TokenType) => {
-  const audience = env.get('authentication.token.audience');
-  const issuer = env.get('authentication.token.issuer');
   const secret = env.get('authorization.secret');
   const expiresIn =
     type === enums.TokenType.ACCESS_TOKEN
-      ? env.get('authentication.token.expiresIn')
+      ? env.get('authentication.accessToken.expiresIn')
       : env.get('authentication.refreshToken.expiresIn');
 
   const token = sign({ type }, secret, {
     expiresIn,
-    audience: audience,
-    issuer: issuer,
     subject: userId,
   });
 
   return {
     token: crypto.encrypt(token),
-    expiration: (decode(token) as JWTType).xp * 1000,
+    expiration: (decode(token) as JWTType).exp * 1000,
   };
 };
 

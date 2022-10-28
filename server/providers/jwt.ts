@@ -33,8 +33,6 @@ class JWTProvider {
             }
           },
           secretOrKey: env.get('authorization.secret'),
-          issuer: env.get('authentication.token.issuer'),
-          audience: env.get('authentication.token.audience'),
           passReqToCallback: true,
         },
         (req: any, payload: any, done: VerifiedCallback) => {

@@ -2,6 +2,7 @@ import { Request, Response } from 'express'
 import { env, crypto, jwt } from '../utils'
 
 export default (req: any, res: Response, next: any) => {
+  console.log(req, res);
   try {
     const authorization = req.headers.authorization.split('&')
 

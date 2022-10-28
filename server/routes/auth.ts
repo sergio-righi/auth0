@@ -10,9 +10,9 @@ class AuthRoute {
   }
 
   #setRoute() {
-    this.router.get('/sign-out', AuthController.logout);
-    this.router.post("/sign-in", AuthController.login);
-    this.router.post("/sign-up", AuthController.register);
+    this.router.get('/sign-out', (req, res) => AuthController.logout(req, res));
+    this.router.post("/sign-in", (req, res) => AuthController.login(req, res));
+    this.router.post("/sign-up", (req, res) => AuthController.register(req, res));
   }
 }
 
