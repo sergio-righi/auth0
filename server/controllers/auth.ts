@@ -9,10 +9,9 @@ class AuthController {
     AuthService.init()
   }
 
-  async user(req: Request, res: Response) {
+  async fetch(req: Request, res: Response) {
     try {
       const { authorization } = req.headers;
-      console.log(authorization)
       const userId = jwt.parseTokenAndGetUserId(helper.fromBearerToken(String(authorization)));
       const response = await UserModel.findById(userId).select('-password');
       res.status(200).json(response);

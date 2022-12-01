@@ -14,10 +14,11 @@ class AuthRoute {
   }
 
   #setRoute() {
-    this.router.get("/user", JWTMiddleware, (req, res) => AuthController.user(req, res));
+    this.router.get("/fetch", JWTMiddleware, (req, res) => AuthController.fetch(req, res));
     this.router.get("/refresh-token", AuthMiddleware, (req, res) => AuthController.refreshToken(req, res));
-    this.router.post("/sign-in", AuthMiddleware, (req, res) => AuthController.login(req, res));
-    this.router.post("/sign-up", AuthMiddleware, (req, res) => AuthController.register(req, res));
+    this.router.post("/find", AuthMiddleware, (req, res) => AuthController.find(req, res));
+    this.router.post("/login", AuthMiddleware, (req, res) => AuthController.login(req, res));
+    this.router.post("/register", AuthMiddleware, (req, res) => AuthController.register(req, res));
   }
 
   #setProviderRoute() {
