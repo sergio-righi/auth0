@@ -75,9 +75,12 @@ class AuthController {
 
   async generateTokensAndAuthenticateUser(res: any, userId: string) {
     const user = await UserModel.findById(userId).select('-password')
-    const { token: accessToken, expiration: expirationDate } = jwt.generateAccessToken(userId)
-    const { token: refreshToken } = jwt.generateRefreshToken(userId)
-    res.status(200).json({ accessToken, expirationDate, refreshToken, user })
+    if (user.verified) {
+      const { token: accessToken, expiration: expirationDate } = jwt.generateAccessToken(userId)
+      const { token: refreshToken } = jwt.generateRefreshToken(userId)
+      res.status(200).json({ accessToken, expirationDate, refreshToken })
+    }
+    res.status(200).json(userId)
   }
 
   async generateUserTokenAndRedirect(req: any, res: any) {
