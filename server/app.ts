@@ -1,3 +1,4 @@
+import cors from 'cors';
 import express from 'express'
 import passport from 'passport'
 
@@ -17,6 +18,7 @@ class App {
   }
 
   #setConfiguration() {
+    this.express.use(cors())
     this.express.use(express.json())
     this.express.use(passport.initialize())
     this.express.use(express.urlencoded({ extended: true }))
