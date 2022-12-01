@@ -2,7 +2,7 @@ import express from 'express'
 import passport from 'passport'
 
 import { Db } from './config'
-import { AuthRoute } from './routes'
+import { AuthRoute, MailRoute, TokenRoute } from './routes'
 
 class App {
   express: express.Express;
@@ -24,6 +24,8 @@ class App {
 
   #setRoute() {
     this.express.use('/auth', AuthRoute)
+    this.express.use('/mail', MailRoute)
+    this.express.use('/token', TokenRoute)
   }
 }
 

@@ -28,17 +28,6 @@ export default convict({
     default: 'mongodb://127.0.0.1:27017/auth0',
     env: 'MONGODB_URI',
   },
-  session: {
-    express: {
-      doc: 'The Secret is used on session-express',
-      default: '',
-      env: 'SESSION_EXPRESS',
-    },
-  },
-  cors: {
-    default: 'http:\/\/localhost:(.+)$',
-    env: 'CORS_ORIGIN',
-  },
   url: {
     frontend: {
       default: 'http://localhost:3000',
