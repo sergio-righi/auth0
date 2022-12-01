@@ -4,7 +4,8 @@
   "description": "auth0 example",
   "main": "index.ts",
   "scripts": {
-    "dev": "nodemon index.ts"
+    "dev": "nodemon index.ts",
+    "start": "set NODE_ENV=production && node --optimize_for_size --max-old-space-size=4096 -- node_modules/ts-node/dist/bin -P tsconfig.json index.ts"
   },
   "author": "Sergio Righi",
   "license": "ISC",
