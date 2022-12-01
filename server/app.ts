@@ -25,6 +25,7 @@ class App {
   }
 
   #setRoute() {
+    this.express.options('*', cors())
     this.express.use('/auth', AuthRoute)
     this.express.use('/mail', MailRoute)
     this.express.use('/token', TokenRoute)
