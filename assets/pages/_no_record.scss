@@ -1,0 +1,32 @@
+@use '../utils/index' as *;
+
+.no-record-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+
+  .no-record-icon {
+    span {
+      font-size: $font-size * 3;
+    }
+  }
+
+  .no-record-description {
+    & > p {
+      line-height: 0.775;
+      text-align: center;
+
+      &:first-child {
+        font-weight: 600;
+        font-size: $font-size * 1.15;
+      }
+
+      &:last-child {
+        font-weight: 300;
+        font-size: $font-size * 0.95;
+      }
+    }
+  }
+}

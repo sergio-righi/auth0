@@ -1,0 +1,13 @@
+html,
+body {
+  height: 100%;
+}
+
+#main,
+#login,
+#__nuxt,
+#content,
+#__layout,
+#container {
+  height: inherit;
+}
