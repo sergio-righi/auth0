@@ -3,7 +3,7 @@ import { join } from 'path';
 import { VerifiedCallback } from 'passport-jwt';
 
 import { UserModel } from '../models';
-import { helper } from '../utils';
+import { env, helper } from '../utils';
 
 class AuthService {
 
@@ -17,9 +17,9 @@ class AuthService {
 
   getConfigByProviderName(providerName: string) {
     return {
-      clientID: 'env.get(`authentication.${providerName}.clientID` as any)',
-      clientSecret: 'env.get(`authentication.${providerName}.clientSecret` as any)',
-      scope: 'env.get(`authentication.${providerName}.scope` as any)',
+      clientID: env.get(`provider.${providerName}.clientID` as any),
+      clientSecret: env.get(`provider.${providerName}.clientSecret` as any),
+      scope: env.get(`provider.${providerName}.scope` as any),
       callbackURL: this._getAuthCallbackUrl(providerName),
     };
   };

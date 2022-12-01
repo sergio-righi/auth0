@@ -4,25 +4,34 @@ import { VerifiedCallback } from 'passport-jwt';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth2';
 
 import { AuthService } from '../services';
+import { ProviderType } from '../interfaces';
 
-const providerName = 'google';
-const passportConfig = AuthService.getConfigByProviderName(providerName);
-const processUserData = ({ _json: json }) => {
-  return {
-    id: json.sub,
-    name: json.name,
-    email: json.email,
-    avatar: json.picture
+class GoogleProvider {
+  #providerName = 'google';
+  #passportConfig: ProviderType
+
+  constructor() {
+    this.#passportConfig = AuthService.getConfigByProviderName(this.#providerName);
+    if (this.#passportConfig.clientID) {
+      passport.use(
+        new GoogleStrategy(
+          { ...this.#passportConfig, passReqToCallback: true },
+          (req: Request, accessToken: string, refreshToken: string, profile: any, verified: VerifiedCallback) => {
+            AuthService.processUserFromSSO(req, this.#processUserData(profile), this.#providerName, verified);
+          },
+        ),
+      );
+    }
+  }
+
+  #processUserData = ({ _json: json }) => {
+    return {
+      id: json.sub,
+      name: json.name,
+      email: json.email,
+      avatar: json.picture
+    }
   }
 }
 
-if (passportConfig.clientID) {
-  passport.use(
-    new GoogleStrategy(
-      { ...passportConfig, passReqToCallback: true },
-      (req: Request, accessToken: string, refreshToken: string, profile: any, verified: VerifiedCallback) => {
-        AuthService.processUserFromSSO(req, processUserData(profile), providerName, verified);
-      },
-    ),
-  );
-}
+export default new GoogleProvider();
