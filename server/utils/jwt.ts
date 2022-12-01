@@ -4,7 +4,7 @@ import { JWTType } from '../interfaces';
 import { crypto, enums, env } from '../utils';
 
 const generateToken = (userId: string, type: enums.TokenType) => {
-  const secret = env.get('authorization.secret');
+  const secret = env.get('authentication.secret');
   const expiresIn =
     type === enums.TokenType.ACCESS_TOKEN
       ? env.get('authentication.accessToken.expiresIn')
@@ -31,12 +31,12 @@ export default {
   },
 
   getTokenType: (token: string): enums.TokenType => {
-    return (verify(token, env.get('authorization.secret')) as JWTType).type;
+    return (verify(token, env.get('authentication.secret')) as JWTType).type;
   },
 
   parseTokenAndGetUserId: (token: string): string => {
     const decryptedToken = crypto.decrypt(token);
-    const decoded = verify(decryptedToken, env.get('authorization.secret')) as JWTType;
+    const decoded = verify(decryptedToken, env.get('authentication.secret')) as JWTType;
     return decoded.sub || '';
   }
 }

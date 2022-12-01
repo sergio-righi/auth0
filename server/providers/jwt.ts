@@ -3,7 +3,7 @@ import { Request } from 'express';
 import { Strategy as JwtStrategy, VerifiedCallback } from 'passport-jwt';
 
 import { UserModel } from '../models';
-import { enums, env, crypto, jwt } from '../utils';
+import { crypto, enums, env, helper, jwt } from '../utils';
 
 class JWTProvider {
   constructor() {
@@ -16,10 +16,8 @@ class JWTProvider {
                 throw new Error('token was not provided, authorization header is empty');
               }
 
-              const authorization = req.headers.authorization;
-              const tokenFromHeader = authorization.includes('&') ? authorization.split('&')[1] : authorization;
-              // const tokenFromHeader = req.headers.authorization.replace('Bearer ', '').trim();
-              const decryptedToken = crypto.decrypt(tokenFromHeader);
+              const authorization = helper.fromBearerToken(req.headers.authorization);
+              const decryptedToken = crypto.decrypt(authorization);
               const tokenType = jwt.getTokenType(decryptedToken);
 
               if (tokenType !== enums.TokenType.ACCESS_TOKEN) {
@@ -32,15 +30,17 @@ class JWTProvider {
               return null;
             }
           },
-          secretOrKey: env.get('authorization.secret'),
+          secretOrKey: env.get('authentication.secret'),
           passReqToCallback: true,
         },
-        (req: any, payload: any, done: VerifiedCallback) => {
-          UserModel.findById(payload.sub, (err: any, user: any) => {
-            if (err) return done(err, false);
-            req.currentUser = user?.toObject();
-            return !user ? done(null, false) : done(null, user);
-          });
+        async (req: any, payload: any, done: VerifiedCallback) => {
+          const response = await UserModel.findById(payload.sub).select('-password');
+          if (response) {
+            req.currentUser = response;
+            return done(null, response);
+          } else {
+            return done(null, false);
+          }
         },
       ),
     );

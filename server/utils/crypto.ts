@@ -1,7 +1,8 @@
 import CryptoJS from 'crypto-js'
+import { env } from '../utils'
 
-const secret = '09f26e402586e2faa8da4c98a35f1b2a'
-const iv = '688fa2ecc1fa934e'
+const secret = env.get('authentication.secret')
+const iv = env.get('authentication.iv')
 
 export default {
   encrypt: (value: string) => {

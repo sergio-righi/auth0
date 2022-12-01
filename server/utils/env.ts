@@ -69,7 +69,7 @@ export default convict({
       },
     },
   },
-  authorization: {
+  authentication: {
     secret: {
       doc: 'The signing key for the AUTH',
       default: '',
@@ -80,8 +80,22 @@ export default convict({
       default: '',
       env: 'AUTH_IV',
     },
+    accessToken: {
+      expiresIn: {
+        doc: 'expressed in seconds or a string describing a time span zeit/ms.',
+        default: '10m',
+        env: 'JWT_EXPIRES_IN',
+      },
+    },
+    refreshToken: {
+      expiresIn: {
+        doc: 'expressed in seconds or a string describing a time span zeit/ms.',
+        default: '24h',
+        env: 'REFRESH_JWT_EXPIRES_IN',
+      },
+    },
   },
-  authentication: {
+  provider: {
     github: {
       clientID: {
         doc: 'The Client ID from Github to use for authentication',
@@ -111,20 +125,6 @@ export default convict({
       scope: {
         default: ['profile email'],
       },
-    },
-    accessToken: {
-      expiresIn: {
-        doc: 'expressed in seconds or a string describing a time span zeit/ms.',
-        default: '10m',
-        env: 'JWT_EXPIRES_IN',
-      },
-    },
-    refreshToken: {
-      expiresIn: {
-        doc: 'expressed in seconds or a string describing a time span zeit/ms.',
-        default: '24h',
-        env: 'REFRESH_JWT_EXPIRES_IN',
-      },
-    },
+    }
   },
 }).validate()

@@ -1,12 +1,24 @@
 import { Request, Response } from 'express'
 
-import { env, jwt, crypto } from '../utils'
+import { crypto, env, helper, jwt } from '../utils'
 import { UserModel } from '../models'
 import { AuthService } from '../services'
 
 class AuthController {
   constructor() {
     AuthService.init()
+  }
+
+  async user(req: Request, res: Response) {
+    try {
+      const { authorization } = req.headers;
+      console.log(authorization)
+      const userId = jwt.parseTokenAndGetUserId(helper.fromBearerToken(String(authorization)));
+      const response = await UserModel.findById(userId).select('-password');
+      res.status(200).json(response);
+    } catch (err: any) {
+      res.status(500).json(err);
+    }
   }
 
   async login(req: Request, res: Response) {
@@ -26,10 +38,6 @@ class AuthController {
     } catch (err: any) {
       res.status(500).json(err)
     }
-  }
-
-  logout(_: Request, res: any) {
-    res.status(200).end()
   }
 
   async register(req: Request, res: Response) {
@@ -67,18 +75,18 @@ class AuthController {
   }
 
   async generateTokensAndAuthenticateUser(res: any, userId: string) {
-    console.log(userId);
     const user = await UserModel.findById(userId).select('-password')
     const { token: accessToken, expiration: expirationDate } = jwt.generateAccessToken(userId)
     const { token: refreshToken } = jwt.generateRefreshToken(userId)
-    res.status(200).json({ refreshToken, expirationDate, user })
+    res.status(200).json({ accessToken, expirationDate, refreshToken, user })
   }
 
   async generateUserTokenAndRedirect(req: any, res: any) {
-    const { token } = jwt.generateRefreshToken(req.currentUser?._id.toString())
+    const { currentUser } = req;
+    const { token: accessToken } = jwt.generateAccessToken(currentUser._id);
     const fronendUrl = env.get('url.frontend')
     const successRedirect = `${fronendUrl}/authentication`
-    res.redirect(successRedirect)
+    res.redirect(`${successRedirect}?accessToken=${accessToken}`)
   }
 
   async find(req: Request, res: Response) {
