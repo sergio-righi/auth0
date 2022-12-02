@@ -13,8 +13,7 @@ class AuthController {
     try {
       const { authorization } = req.headers;
       const userId = jwt.parseTokenAndGetUserId(helper.fromBearerToken(String(authorization)));
-      const response = await UserModel.findById(userId).select('-password');
-      res.status(200).json(response);
+      this.generateTokensAndAuthenticateUser(res, userId);
     } catch (err: any) {
       res.status(500).json(err);
     }
@@ -82,7 +81,7 @@ class AuthController {
 
   async generateUserTokenAndRedirect(req: any, res: any) {
     const { currentUser } = req;
-    const { token: accessToken } = jwt.generateAccessToken(currentUser._id);
+    const { token: accessToken } = jwt.generateAccessToken(String(currentUser._id));
     const fronendUrl = env.get('url.frontend')
     const successRedirect = `${fronendUrl}/authentication`
     res.redirect(`${successRedirect}?accessToken=${accessToken}`)

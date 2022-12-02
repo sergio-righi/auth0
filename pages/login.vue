@@ -18,20 +18,20 @@
       />
       <gv-flexbox>
         <gv-button submit primary stretch :process="isProcessing">
-          {{ $t('action.sign_in') }}
+          {{ $t("action.sign_in") }}
         </gv-button>
         <gv-button
           @onclick="redirectToRegister"
           stretch
           :disabled="isProcessing"
         >
-          {{ $t('action.sign_up') }}
+          {{ $t("action.sign_up") }}
         </gv-button>
       </gv-flexbox>
       <gv-space y sm>
         <gv-flexbox justify="center">
           <gv-button class="footnote" @onclick="onReset" inline>
-            {{ $t('page.login.forget_password') }}
+            {{ $t("page.login.forget_password") }}
           </gv-button>
         </gv-flexbox>
       </gv-space>
@@ -40,76 +40,75 @@
 </template>
 
 <script>
-import { Feedback } from '@/components'
-import { eFeedback } from '@/utils/enum'
+import { Feedback } from "@/components";
+import { eFeedback } from "@/utils/enum";
 
 export default {
-  name: 'SignIn',
+  name: "SignIn",
   components: {
     Feedback,
   },
-  middleware: ['not-auth', 'validate'],
+  middleware: ["not-auth", "validate"],
   data() {
     return {
       password: null,
       isProcessing: false,
-    }
+    };
   },
   computed: {
     email() {
-      return this.$route.query.email
+      return this.$route.query.email;
     },
     callback() {
-      return this.$store.getters.getCallback
+      return this.$store.getters.getCallback;
     },
   },
   methods: {
     async onSubmit() {
-      this.isProcessing = true
+      this.isProcessing = true;
       try {
         const response = await this.$service.auth.login(
           this.email,
           this.password
-        )
+        );
         if (response) {
           if (response.verified) {
-            window.location.href = this.$store.getters.getCallback
-            this.$service.auth.callback(null)
+            this.$service.auth.redirectToOrigin();
           } else {
-            this.redirectToAuthorization()
+            this.redirectToAuthorization();
           }
         } else {
-          this.isProcessing = false
-          this.$service.auth.feedback(this.$t('message.login.wrong_password'))
+          this.isProcessing = false;
+          this.$service.auth.feedback(this.$t("message.login.wrong_password"));
         }
       } catch (err) {
-        this.isProcessing = false
-        this.$service.auth.feedback(this.$t('message.feedback.error'))
+        this.isProcessing = false;
+        this.$service.auth.feedback(this.$t("message.feedback.error"));
       }
     },
     async onReset() {
       try {
-        await this.$service.mail.forgetPassword(this.email)
+        await this.$service.mail.forgetPassword(this.email);
         this.$service.auth.feedback(
-          this.$t('message.feedback.mail_sent'),
+          this.$t("message.feedback.mail_sent"),
           eFeedback.success
-        )
+        );
       } catch (err) {
-        this.$service.auth.feedback(this.$t('message.feedback.error'))
+        this.$service.auth.feedback(this.$t("message.feedback.error"));
       }
     },
     redirectToHome() {
-      this.$router.push(this.$resolve.home(this.callback))
+      this.$router.push(this.$resolve.home(this.callback));
     },
     redirectToRegister() {
-      this.$router.push(this.$resolve.register(this.callback))
+      this.$router.push(this.$resolve.register(this.callback));
     },
     redirectToPassword() {
-      this.$router.push(this.$resolve.password(this.callback))
+      this.$router.push(this.$resolve.password(this.callback));
     },
     redirectToAuthorization() {
-      this.$router.push(this.$resolve.authorization(this.callback))
+      this.$router.push(this.$resolve.authorization(this.callback));
     },
   },
-}
+};
 </script>

@@ -25,7 +25,6 @@ class AuthService {
   };
 
   processUserFromSSO(req: any, profile: any, origin: string, done: VerifiedCallback) {
-
     UserModel.findOneAndUpdate(
       { origin, originId: profile.id },
       {
@@ -45,7 +44,7 @@ class AuthService {
   }
 
   _getAuthCallbackUrl(providerName: string) {
-    return `http://localhost:4000/auth/${providerName}/callback`;
+    return `${env.get('url.backend')}/auth/${providerName}/callback`;
   }
 
   async find(query: any) {

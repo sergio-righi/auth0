@@ -17,29 +17,28 @@
 
 <script>
 export default {
-  middleware: ['auth', 'validate'],
+  middleware: ["auth", "validate"],
   data() {
     return {
       processing: true,
-      message: this.$t('message.logout.ongoing'),
-    }
+      message: this.$t("message.logout.ongoing"),
+    };
   },
   async created() {
     try {
-      const { query } = this.$route
-      const callback = query.callback || this.$store.getters.getCallback
-      await this.$service.auth.logout()
+      const { query } = this.$route;
+      const callback = query.callback || this.$store.getters.getCallback;
+      await this.$service.auth.logout();
       if (callback) {
-        this.$service.auth.callback(null)
-        window.location.href = callback
+        this.$service.auth.redirectToOrigin();
       } else {
-        this.processing = false
-        this.message = this.$t('message.logout.no_callback')
+        this.processing = false;
+        this.message = this.$t("message.logout.no_callback");
       }
     } catch (err) {
-      this.processing = false
-      this.message = this.$t('message.logout.error')
+      this.processing = false;
+      this.message = this.$t("message.logout.error");
     }
   },
-}
+};
 </script>

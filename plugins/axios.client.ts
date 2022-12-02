@@ -3,12 +3,12 @@ import { initializeAxios } from '@/utils/api'
 const accessor: any = ({ $axios, $config, store }: any) => {
   initializeAxios($axios)
 
-  const token = store.getters.getToken;
-
-  console.log(token);
+  const { accessToken } = store.getters;
 
   $axios.onRequest((config: any) => {
-    config.headers.common.Authorization = token
+    if (accessToken) {
+      config.headers.common.Authorization = accessToken
+    }
     config.headers.apikey = $config.apiKey
   })
 

@@ -30,13 +30,6 @@ const Resolve = (context: any) => ({
     return context.localePath({ path: route.authorization, query: { callback } })
   }
 
-  // image: {
-
-  //   root: (name: string) => {
-  //     return `/${name}`
-  //   }
-  // }
-
 });
 
 export const initializeResolve = (context: Context) => ({

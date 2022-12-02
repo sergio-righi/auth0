@@ -1,9 +1,10 @@
 
-export default async ({ error, query, redirect, $service }: any) => {
+export default async ({ error, query, $service }: any) => {
   const hasCallback = query.callback;
   const isAuthenticated = await $service.auth.isAuthenticated();
   if (!isAuthenticated && hasCallback) {
-    return redirect(query.callback)
+    alert('here');
+    $service.auth.redirectToOrigin();
   } else if (!isAuthenticated) {
     error({ statusCode: 400 })
   }

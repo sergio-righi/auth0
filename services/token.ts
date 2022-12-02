@@ -23,9 +23,9 @@ class TokenService {
     return response.data ?? null
   }
 
-  async grant(usedId: string, code: string) {
+  async grant(userId: string, code: string) {
     return this._processResponse(
-      await this.$axios.patch('/token/grant/' + usedId, { code })
+      await this.$axios.patch('/token/grant/' + userId, { code })
     )
   }
 
@@ -41,7 +41,7 @@ class TokenService {
 
   _processResponse(response: any) {
     if (response.data) {
-      this.$store.dispatch('setUser', { user: response.data, key: this.$config.vuexKey})
+      this.$store.dispatch('setUser', { user: response.data, key: this.$config.vuexKey })
       return response.data
     }
     return null

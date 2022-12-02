@@ -17,34 +17,33 @@
 
 <script>
 export default {
-  middleware: ['not-auth'],
+  middleware: ["not-auth"],
   data() {
     return {
       isProcessing: true,
-      message: this.$t('message.authentication.ongoing'),
-    }
+      message: this.$t("message.authentication.ongoing"),
+    };
   },
   async created() {
     try {
-      const { query } = this.$route
-      const callback = query.callback || this.$store.getters.getCallback
-      const response = await this.$service.auth.refresh()
+      const { query } = this.$route;
+      const callback = query.callback || this.$store.getters.getCallback;
+      const response = await this.$service.auth.fetch(query.accessToken);
       if (response) {
         if (callback) {
-          this.$service.auth.callback(null)
-          window.location.href = callback
+          this.$service.auth.redirectToOrigin();
         } else {
-          this.isProcessing = false
-          this.message = this.$t('message.authentication.no_callback')
+          this.isProcessing = false;
+          this.message = this.$t("message.authentication.no_callback");
         }
       } else {
-        this.isProcessing = false
-        this.message = this.$t('message.authentication.not_finished')
+        this.isProcessing = false;
+        this.message = this.$t("message.authentication.not_finished");
       }
     } catch (err) {
-      this.isProcessing = false
-      this.message = this.$t('message.authentication.error')
+      this.isProcessing = false;
+      this.message = this.$t("message.authentication.error");
     }
   },
-}
+};
 </script>

@@ -1,4 +1,4 @@
-import { i18n } from './utils'
+import { i18n } from "./utils";
 
 export default {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
@@ -12,29 +12,29 @@ export default {
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: 'The Lazy Company - Single Sign-On',
+    title: "The Lazy Company - Single Sign-On",
     htmlAttrs: {
-      lang: 'en',
+      lang: "en",
     },
     meta: [
-      { charset: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: '' },
-      { name: 'format-detection', content: 'telephone=no' },
+      { charset: "utf-8" },
+      { name: "viewport", content: "width=device-width, initial-scale=1" },
+      { hid: "description", name: "description", content: "" },
+      { name: "format-detection", content: "telephone=no" },
     ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
+    link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
-  css: ['~/assets/default.scss'],
+  css: ["~/assets/default.scss"],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-    '~/plugins/service.client',
-    '~/plugins/vuex.client',
-    '~/plugins/axios.client',
-    '~/plugins/resolve.client',
-    '~/plugins/grater-vue.client',
+    "~/plugins/service.client",
+    "~/plugins/vuex.client",
+    "~/plugins/axios.client",
+    "~/plugins/resolve.client",
+    "~/plugins/grater-vue.client",
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -43,42 +43,41 @@ export default {
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
     // https://go.nuxtjs.dev/typescript
-    '@nuxt/typescript-build',
+    "@nuxt/typescript-build",
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     // https://go.nuxtjs.dev/axios
-    'nuxt-i18n',
-    '@nuxtjs/axios',
+    "nuxt-i18n",
+    "@nuxtjs/axios",
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
     progress: false,
-    credentials: true,
     baseUrl: process.env.API_URL,
   },
 
   i18n: {
     seo: true,
     lazy: true,
-    langDir: '~/locales/',
+    langDir: "~/locales/",
     parsePages: false,
     vueI18nLoader: true,
     locales: [
-      { code: 'en-CA', iso: 'en-CA', name: 'English', file: 'en-CA.json' },
+      { code: "en-CA", iso: "en-CA", name: "English", file: "en-CA.json" },
     ],
     vueI18n: i18n,
-    defaultLocale: 'en-CA',
-    strategy: 'prefix_and_default',
+    defaultLocale: "en-CA",
+    strategy: "prefix_and_default",
     detectBrowserLanguage: {
       useCookie: true,
-      cookieKey: 'i18n_redirected',
-      redirectOn: 'root',
+      cookieKey: "i18n_redirected",
+      redirectOn: "root",
     },
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {},
-}
+};

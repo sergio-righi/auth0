@@ -12,19 +12,19 @@
         </gv-col>
         <gv-col>
           <gv-button submit primary stretch :process="isProcessing">
-            {{ $t('action.continue') }}
+            {{ $t("action.continue") }}
           </gv-button>
         </gv-col>
         <gv-col>
           <gv-flexbox justify="center">
             <span class="footnote">
-              {{ $t('footnote.try_again') }}
+              {{ $t("footnote.try_again") }}
               <gv-button inline @onclick="resendEmail">
-                {{ $t('action.resend') }}
+                {{ $t("action.resend") }}
               </gv-button>
-              {{ $t('linking_word.or') }}
+              {{ $t("linking_word.or") }}
               <gv-button inline @onclick="logout">
-                {{ $t('action.sign_out') }}
+                {{ $t("action.sign_out") }}
               </gv-button>
             </span>
           </gv-flexbox>
@@ -35,73 +35,74 @@
 </template>
 
 <script>
-import { Feedback } from '@/components'
-import { eFeedback } from '@/utils/enum'
+import { Feedback } from "@/components";
+import { eFeedback } from "@/utils/enum";
 
 export default {
-  name: 'Authorization',
+  name: "Authorization",
   components: {
     Feedback,
   },
-  middleware: ['auth', 'validate'],
+  middleware: ["auth", "validate"],
   data() {
     return {
       code: null,
       isProcessing: false,
-    }
+    };
   },
   computed: {
     user() {
-      return this.$store.getters.getUser
+      return this.$store.getters.getUser;
     },
     callback() {
-      return this.$store.getters.getCallback
+      return this.$store.getters.getCallback;
     },
   },
   methods: {
     async onSubmit() {
-      this.isProcessing = true
+      this.isProcessing = true;
       try {
-        const response = await this.$service.token.grant(this.user, this.code)
+        const response = await this.$service.token.grant(
+          this.user.id,
+          this.code
+        );
         if (response) {
-          window.location.href = this.callback
-          this.$service.auth.callback(null)
+          this.$service.auth.redirectToOrigin();
         } else {
-          this.code = null
-          this.isProcessing = false
+          this.code = null;
+          this.isProcessing = false;
           this.$service.auth.feedback(
-            this.$t('message.authorization.not_match')
-          )
+            this.$t("message.authorization.not_match")
+          );
         }
       } catch (err) {
-        this.isProcessing = false
-        this.$service.auth.feedback(this.$t('message.feedback.error'))
+        this.isProcessing = false;
+        this.$service.auth.feedback(this.$t("message.feedback.error"));
       }
     },
     async resendEmail() {
       try {
-        this.code = null
+        this.code = null;
         await this.$service.mail.verificationCode(
           this.user.name,
           this.user.email
-        )
+        );
         this.$service.auth.feedback(
-          this.$t('message.feedback.mail_sent'),
+          this.$t("message.feedback.mail_sent"),
           eFeedback.success
-        )
+        );
       } catch (err) {
-        this.$service.auth.feedback(this.$t('message.authorization.not_found'))
+        this.$service.auth.feedback(this.$t("message.authorization.not_found"));
       }
     },
     async logout() {
-      await this.$service.auth.logout()
-      window.location.href = this.callback
-      this.$service.auth.callback(null)
+      await this.$service.auth.logout();
+      this.$service.auth.redirectToOrigin();
     },
     verificationCallback(code) {
-      this.code = code
-      this.onSubmit()
+      this.code = code;
+      this.onSubmit();
     },
   },
-}
+};
 </script>
