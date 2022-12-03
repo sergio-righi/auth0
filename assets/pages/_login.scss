@@ -1,0 +1,91 @@
+@use '../utils/index' as *;
+
+#login {
+  display: flex;
+  width: inherit;
+  height: inherit;
+  align-items: center;
+  background-size: cover;
+  justify-content: center;
+  background-attachment: fixed;
+  background-position: center;
+  background-image: url('/background.svg');
+
+  .login-container {
+    width: 100%;
+    max-width: 350px;
+    min-width: 250px;
+    overflow: hidden;
+    padding: $default-distance;
+    border-radius: $border-radius * 3;
+    margin: 0 $default-distance * 0.75;
+    background-color: var(--gv-color-theme);
+    border: 1px solid var(--gv-color-border);
+    box-shadow: 1px 5px 8px var(--gv-color-overlay-dark);
+
+    .login-header {
+      padding: $default-distance * 0.75;
+
+      .brand {
+        margin: 0 auto;
+        text-align: center;
+        margin-top: $default-distance * 0.5;
+        margin-bottom: $default-distance * 1.5;
+        max-width: calc(100% - #{$default-distance});
+      }
+
+      .title {
+        font-weight: 600;
+        line-height: initial;
+        font-size: $font-size * 0.75;
+      }
+
+      .message {
+        font-weight: 900;
+        line-height: initial;
+        font-size: $font-size * 1.25;
+      }
+    }
+
+    .login-content {
+      .login-control {
+        font-size: $font-size * 0.75;
+      }
+
+      .horizontal-line {
+        display: block;
+        text-align: center;
+        line-height: 0.1em;
+        border-radius: $border-radius;
+        border-bottom: 1px solid var(--gv-color-border);
+        margin: $default-distance $default-distance * 1.35;
+
+        & > span {
+          font-weight: 500;
+          text-transform: uppercase;
+          font-size: $font-size * 0.75;
+          padding: 0 $default-distance * 0.75;
+          background-color: var(--gv-color-theme);
+        }
+      }
+
+      .footnote {
+        font-size: $font-size * 0.875;
+        margin-top: $default-distance * 0.75;
+
+        button {
+          margin: 0
+        }
+      }
+    }
+
+    .login-footer {
+      text-align: center;
+      padding: 0 $default-distance;
+      .message {
+        font-size: $font-size * 0.75;
+        margin-top: $default-distance * 0.75;
+      }
+    }
+  }
+}

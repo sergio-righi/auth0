@@ -1,10 +1,10 @@
 {
   "compilerOptions": {
-    "target": "ES2018",
-    "module": "ESNext",
-    "moduleResolution": "Node",
+    "target": "es6",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
     "lib": [
-      "ESNext",
+      "es6",
       "ESNext.AsyncIterable",
       "DOM"
     ],
@@ -13,7 +13,10 @@
     "sourceMap": true,
     "strict": true,
     "noEmit": true,
+    "noImplicitAny": false,
     "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "allowSyntheticDefaultImports": true,
     "baseUrl": ".",
     "paths": {
       "~/*": [
@@ -25,14 +28,27 @@
     },
     "types": [
       "@nuxt/types",
-      "@nuxtjs/axios",
       "@types/node"
     ]
   },
+  "include": [
+    "**/*.ts",
+    "**/*.vue",
+    "types/shims-global.d.ts",
+    "types/shims-module.d.ts"
+  ],
   "exclude": [
     "node_modules",
-    "server",
     ".nuxt",
+    "server",
     "dist"
-  ]
+  ],
+  "ts-node": {
+    "require": [
+      "tsconfig-paths/register"
+    ]
+  },
+  "vueCompilerOptions": {
+    "experimentalDisableTemplateSupport": true
+  }
 }

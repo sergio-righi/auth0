@@ -3,6 +3,7 @@ import express from 'express'
 import passport from 'passport'
 
 import { Db } from './config'
+import { env } from './utils'
 import { AuthRoute, MailRoute, TokenRoute } from './routes'
 
 class App {
@@ -18,14 +19,16 @@ class App {
   }
 
   #setConfiguration() {
-    this.express.use(cors())
+    this.express.use(cors({
+      origin: new RegExp(env.get('cors')),
+    }))
     this.express.use(express.json())
     this.express.use(passport.initialize())
     this.express.use(express.urlencoded({ extended: true }))
   }
 
   #setRoute() {
-    this.express.options('*', cors())
+    // this.express.options('*', cors())
     this.express.use('/auth', AuthRoute)
     this.express.use('/mail', MailRoute)
     this.express.use('/token', TokenRoute)
