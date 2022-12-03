@@ -38,6 +38,10 @@ export default convict({
       env: 'BACKEND_URL',
     },
   },
+  cors: {
+    default: '*',
+    env: 'CORS_ORIGIN',
+  },
   mail: {
     gmail: {
       account: {
