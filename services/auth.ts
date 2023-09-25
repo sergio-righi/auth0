@@ -26,7 +26,6 @@ class AuthService {
   }
 
   async fetch(accessToken: string) {
-    console.log(accessToken);
     return this._processResponse(
       await this.$axios.get('/auth/fetch', {
         headers: {
@@ -53,7 +52,6 @@ class AuthService {
   }
 
   _processResponse(response: any) {
-    console.log(response);
     if (response.data) {
       const { user, accessToken, refreshToken } = response.data
       this.$store.dispatch('setUser', user)
